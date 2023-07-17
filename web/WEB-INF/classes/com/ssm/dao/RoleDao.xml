@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.RoleDao">
+    <select id="selectRoleList" resultType="Role">
+		select roleId,roleName from t_role
+	</select>
+
+    <select id="selectRoleWithUsers" parameterType="Integer"
+            resultMap="RoleWithUsersResult">
+		select r.*,u.userId,u.userName, u.loginName,u.password,u.tel,u.registerTime,u.status
+		from t_role r,t_user u
+		 where r.roleId=u.roleId and r.roleId=#{roleId}
+	</select>
+    <resultMap type="Role" id="RoleWithUsersResult">
+        <id property="roleId" column="roleId" />
+        <result property="roleName" column="roleName" />
+        <collection property="userList" ofType="User">
+            <id property="userId" column="userId" />
+            <result property="userName" column="userName" />
+            <result property="loginName" column="loginName" />
+            <result property="password" column="password" />
+            <result property="tel" column="tel" />
+            <result property="registerTime" column="registerTime" />
+            <result property="status" column="status" />
+        </collection>
+    </resultMap>
+</mapper>
